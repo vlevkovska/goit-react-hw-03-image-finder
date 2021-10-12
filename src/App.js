@@ -1,7 +1,10 @@
 import { Component } from "react";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Searchbar from "./Components/SearchBar/SearchBar";
-// import ImageGallery from "./components/ImageGallery";
+import ImageGallery from "./Components/ImageGallery/ImageGallery";
 // import Button from "./components/Button";
 // import Loader from "./components/Loader";
 // import Modal from "./components/Modal";
@@ -42,11 +45,13 @@ class App extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { value } = event.target[1];
-
     if (value.trim() === "") {
-      alert("Введите искомую картинку.");
-      return;
+      return toast.error("Enter name of picture you are looking for!");
     }
+    // if (value.trim() === "") {
+    //   alert("Введите искомую картинку.");
+    //   return;
+    // }
 
     this.setState({
       searchImg: value.toLowerCase(),
@@ -79,9 +84,10 @@ class App extends Component {
     return (
       <>
         <Searchbar onSubmit={this.handleSubmit} />
+        <ToastContainer autoClose={3000} />
 
-        {/* {img && <ImageGallery imgArr={img} onOpen={this.hendelOpenModal} />}
-        {isModalOpen && (
+        {img && <ImageGallery imgArr={img} onOpen={this.hendelOpenModal} />}
+        {/* {isModalOpen && (
           <Modal modalImg={modalImg} modalClose={this.hendelCloseModal} />
         )}
         {loading && <Loader />}
