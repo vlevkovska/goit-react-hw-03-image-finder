@@ -8,7 +8,7 @@ import ImageGallery from "./Components/ImageGallery/ImageGallery";
 // import Button from "./components/Button";
 // import Loader from "./components/Loader";
 // import Modal from "./components/Modal";
-// import api from "./services/pixabayAPI";
+import fetchImages from "./Services/API";
 
 class App extends Component {
   state = {
@@ -20,27 +20,27 @@ class App extends Component {
     isModalOpen: false,
   };
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (
-  //     prevState.currentPage !== this.state.currentPage ||
-  //     !this.state.img.length
-  //   ) {
-  //     api(this.state.searchImg, this.state.currentPage)
-  //       .then((img) => {
-  //         this.setState((prevState) => {
-  //           return { img: [...prevState.img, ...img.hits] };
-  //         });
-  //         if (this.state.currentPage !== 1) {
-  //           window.scrollTo({
-  //             top: document.documentElement.scrollHeight,
-  //             behavior: "smooth",
-  //           });
-  //         }
-  //       })
-  //       .catch((error) => this.setState({ error }))
-  //       .finally(() => this.setState({ loading: false }));
-  //   }
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.currentPage !== this.state.currentPage ||
+      !this.state.img.length
+    ) {
+      fetchImages(this.state.searchImg, this.state.currentPage)
+        .then((img) => {
+          this.setState((prevState) => {
+            return { img: [...prevState.img, ...img.hits] };
+          });
+          if (this.state.currentPage !== 1) {
+            window.scrollTo({
+              top: document.documentElement.scrollHeight,
+              behavior: "smooth",
+            });
+          }
+        })
+        .catch((error) => this.setState({ error }))
+        .finally(() => this.setState({ loading: false }));
+    }
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
