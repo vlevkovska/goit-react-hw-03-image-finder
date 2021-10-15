@@ -2,12 +2,13 @@ import { Component } from "react";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 import Searchbar from "./Components/SearchBar/SearchBar";
 import ImageGallery from "./Components/ImageGallery/ImageGallery";
 import Button from "./Components/Button/Button";
-// import Loader from "./components/Loader";
-// import Modal from "./components/Modal";
+import Loader from "./Components/Loader/Loader";
+import Modal from "./Components/Modal/Modal";
 import fetchImages from "./Services/API";
 
 class App extends Component {
@@ -61,23 +62,23 @@ class App extends Component {
     });
   };
 
-  // handleLoadeMore = () => {
-  //   this.setState(({ currentPage }) => ({
-  //     currentPage: currentPage + 1,
-  //     loading: true,
-  //   }));
-  // };
+  handleLoadeMore = () => {
+    this.setState(({ currentPage }) => ({
+      currentPage: currentPage + 1,
+      loading: true,
+    }));
+  };
 
-  // hendelOpenModal = (e) => {
-  //   this.setState({
-  //     isModalOpen: true,
-  //     modalImg: e.target.dataset.source,
-  //   });
-  // };
+  hendelOpenModal = (e) => {
+    this.setState({
+      isModalOpen: true,
+      modalImg: e.target.dataset.source,
+    });
+  };
 
-  // hendelCloseModal = () => {
-  //   this.setState({ isModalOpen: false, modalImg: "" });
-  // };
+  hendelCloseModal = () => {
+    this.setState({ isModalOpen: false, modalImg: "" });
+  };
 
   render() {
     const { img, loading, currentPage, isModalOpen, modalImg } = this.state;
@@ -87,10 +88,10 @@ class App extends Component {
         <ToastContainer autoClose={3000} />
 
         {img && <ImageGallery imgArr={img} onOpen={this.hendelOpenModal} />}
-        {/* {isModalOpen && (
+        {isModalOpen && (
           <Modal modalImg={modalImg} modalClose={this.hendelCloseModal} />
         )}
-        {loading && <Loader />} */}
+        {loading && <Loader />}
         {currentPage && <Button onClick={this.handleLoadeMore} />}
       </>
     );
