@@ -49,10 +49,6 @@ class App extends Component {
     if (value.trim() === "") {
       return toast.error("Enter name of picture you are looking for!");
     }
-    // if (value.trim() === "") {
-    //   alert("Введите искомую картинку.");
-    //   return;
-    // }
 
     this.setState({
       searchImg: value.toLowerCase(),
