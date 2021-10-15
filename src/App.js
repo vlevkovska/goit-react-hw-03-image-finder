@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Searchbar from "./Components/SearchBar/SearchBar";
 import ImageGallery from "./Components/ImageGallery/ImageGallery";
-// import Button from "./components/Button";
+import Button from "./Components/Button/Button";
 // import Loader from "./components/Loader";
 // import Modal from "./components/Modal";
 import fetchImages from "./Services/API";
@@ -90,8 +90,8 @@ class App extends Component {
         {/* {isModalOpen && (
           <Modal modalImg={modalImg} modalClose={this.hendelCloseModal} />
         )}
-        {loading && <Loader />}
-        {currentPage && <Button onClick={this.handleLoadeMore} />} */}
+        {loading && <Loader />} */}
+        {currentPage && <Button onClick={this.handleLoadeMore} />}
       </>
     );
   }
