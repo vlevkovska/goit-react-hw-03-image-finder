@@ -8,8 +8,10 @@ function fetchImages(img, page) {
       return response.json();
     }
 
-    return Promise.reject(new Error(`No pictures "${img} were found`));
+    // return Promise.reject(new Error(`No pictures "${img} were found`));
   });
 }
 
-export default fetchImages;
+const imagesAPI = { fetchImages };
+
+export default imagesAPI;

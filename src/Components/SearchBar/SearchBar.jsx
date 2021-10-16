@@ -20,6 +20,7 @@ class Searchbar extends Component {
 
           <input
             name="inputValue"
+            value={this.state.text}
             onChange={this.handleChange}
             className={style.SearchFormInput}
             type="text"

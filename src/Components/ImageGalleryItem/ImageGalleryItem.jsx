@@ -1,7 +1,9 @@
+import React from "react";
+import PropTypes from "prop-types";
+
 import style from "./ImageGalleryItem.module.css";
 
-function ImageGalleryItem({ imgArr, onOpen }) {
-  const { webformatURL, tags, largeImageURL } = imgArr;
+function ImageGalleryItem({ webformatURL, tags, onOpen, largeImageURL }) {
   return (
     <li className={style.ImageGalleryItem}>
       <img
@@ -16,3 +18,10 @@ function ImageGalleryItem({ imgArr, onOpen }) {
 }
 
 export default ImageGalleryItem;
+
+ImageGalleryItem.propTypes = {
+  webformatURL: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+  onOpen: PropTypes.func,
+  largeImageURL: PropTypes.string.isRequired,
+};
