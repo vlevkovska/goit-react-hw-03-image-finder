@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,14 +21,14 @@ const Status = {
 class App extends Component {
   state = {
     searchImg: "",
+    page: 1,
     img: [],
     loading: false,
-    currentPage: null,
-    // modalImg: "",
+    // currentPage: null,
+    modalImg: "",
     isModalOpen: false,
     error: null,
     status: Status.IDLE,
-    largeImageURL: "",
     webformatURL: "",
     id: "",
   };
@@ -37,7 +37,7 @@ class App extends Component {
     const prevName = prevState.searchImg;
     const nextName = this.state.searchImg;
     const prevPage = prevState.page;
-    const nextPage = this.state.currentPage;
+    const nextPage = this.state.page;
     if (prevName !== nextName) {
       this.setState({ img: [], page: 1, status: Status.PENDING });
     }
@@ -61,16 +61,16 @@ class App extends Component {
         });
         if (nextPage !== 1) {
           window.scrollTo({
-            top: document.documentElement.scrollHeight,
+            top: document.body.scrollHeight,
             behavior: "smooth",
           });
         }
         if (img.total === 0) {
-          return Promise.reject(new Error("не верный ввод"));
+          return Promise.reject(new Error("Incorrect input"));
         }
       })
-      .catch((error) => this.setState({ error, status: Status.REJECTED }))
-      .finally(() => this.setState({ loading: false }));
+      .catch((error) => this.setState({ error, status: Status.REJECTED }));
+    // .finally(() => this.setState({ loading: false }));
   }
 
   handleSubmit = (event) => {
@@ -83,51 +83,59 @@ class App extends Component {
     this.setState({
       searchImg: value.toLowerCase(),
       loading: true,
-      currentPage: 1,
+      page: 1,
       img: [],
     });
   };
 
   handleLoadeMore = () => {
-    this.setState(({ currentPage }) => ({
-      currentPage: currentPage + 1,
-      loading: true,
+    this.setState(({ page }) => ({
+      page: page + 1,
+      // loading: true,
     }));
   };
 
   hendelOpenModal = (e) => {
-    this.setState({
-      isModalOpen: true,
-      modalImg: e.target.dataset.source,
-    });
+    this.setState({ modalImg: e.target.dataset.source });
+    this.toggleModal();
+    // isModalOpen: true,
+    // modalImg: e.target.dataset.source,
   };
-
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
   hendelCloseModal = () => {
     this.setState({ isModalOpen: false, modalImg: "" });
   };
 
   render() {
-    const { img, loading, currentPage, error, status, isModalOpen, modalImg } =
-      this.state;
+    const { img, error, status, isModalOpen, modalImg } = this.state;
     const resolvedImg = status === Status.RESOLVED && img.length > 11;
     // loading, currentPage,
     return (
       <>
         <Searchbar onSubmit={this.handleSubmit} />
-        {status === Status.IDLE && <h2>Use Search above!</h2>}
+        {status === Status.IDLE && (
+          <h2 className="invitation">Use Search above!</h2>
+        )}
         {status === Status.REJECTED && <h1>{error.message}</h1>}
         <ToastContainer autoClose={3000} />
 
         {resolvedImg && (
           <ImageGallery imgArr={img} onOpen={this.hendelOpenModal} />
         )}
-        {status === Status.PENDING}
-        {img.length !== 0 && <Button onClick={this.btnFetch} />}
+        {status === Status.PENDING && <Loader />}
+        {img.length !== 0 && <Button onClick={this.handleLoadeMore} />}
         {isModalOpen && (
+          <Modal modalClose={this.hendelCloseModal} largeImageURL={modalImg} />
+        )}
+        {/* {isModalOpen && (
           <Modal modalImg={modalImg} modalClose={this.hendelCloseModal} />
         )}
         {loading && <Loader />}
-        {currentPage && <Button onClick={this.handleLoadeMore} />}
+        {currentPage && <Button onClick={this.handleLoadeMore} />} */}
       </>
     );
   }
