@@ -96,14 +96,20 @@ class App extends Component {
   };
 
   hendelOpenModal = (e) => {
-    this.setState({ modalImg: e.target.dataset.source });
-    this.toggleModal();
+    this.setState(
+      {
+        modalImg: e.target.dataset.source,
+      },
+      () => {
+        this.toggleModal();
+      }
+    );
     // isModalOpen: true,
     // modalImg: e.target.dataset.source,
   };
   toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
+    this.setState(({ isModalOpen }) => ({
+      isModalOpen: !isModalOpen,
     }));
   };
   hendelCloseModal = () => {
