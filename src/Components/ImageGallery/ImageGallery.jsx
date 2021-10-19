@@ -7,13 +7,13 @@ import style from "./ImageGallery.module.css";
 function ImageGallery({ imgArr, onOpen }) {
   return (
     <ul className={style.ImageGallery}>
-      {imgArr.map(({ webformatURL, id, tags, largeImageURL }) => (
+      {imgArr.map(({ webformatURL, id, tags, modalImg }) => (
         <ImageGalleryItem
           key={id}
           tags={tags}
           webformatURL={webformatURL}
-          largeImageURL={largeImageURL}
-          openModal={onOpen}
+          modalImg={modalImg}
+          onOpen={onOpen}
         />
       ))}
       {/* {imgArr.map((imgArr) => (
@@ -31,8 +31,8 @@ ImageGallery.propTypes = {
       id: PropTypes.number.isRequired,
       tags: PropTypes.string.isRequired,
       webformatURL: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
+      modalImg: PropTypes.string,
     })
   ),
-  onOpen: PropTypes.func.isRequired,
+  onOpen: PropTypes.func,
 };

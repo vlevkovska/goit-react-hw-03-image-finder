@@ -22,10 +22,10 @@ class App extends Component {
   state = {
     searchImg: "",
     page: 1,
-    img: [],
+    imgArr: [],
     loading: false,
     // currentPage: null,
-    modalImg: "",
+    largeImageURL: "",
     isModalOpen: false,
     error: null,
     status: Status.IDLE,
@@ -39,7 +39,7 @@ class App extends Component {
     const prevPage = prevState.page;
     const nextPage = this.state.page;
     if (prevName !== nextName) {
-      this.setState({ img: [], page: 1, status: Status.PENDING });
+      this.setState({ imgArr: [], page: 1, status: Status.PENDING });
     }
     if (prevName !== nextName || prevPage !== nextPage) {
       this.fetchImages(nextName, nextPage);
@@ -52,10 +52,10 @@ class App extends Component {
   fetchImages(nextName, nextPage) {
     imagesApi
       .fetchImages(nextName, nextPage)
-      .then((img) => {
+      .then((imgArr) => {
         this.setState((prevState) => {
           return {
-            img: [...prevState.img, ...img.hits],
+            imgArr: [...prevState.imgArr, ...imgArr.hits],
             status: Status.RESOLVED,
           };
         });
@@ -65,7 +65,7 @@ class App extends Component {
             behavior: "smooth",
           });
         }
-        if (img.total === 0) {
+        if (imgArr.total === 0) {
           return Promise.reject(new Error("Incorrect input"));
         }
       })
@@ -84,64 +84,61 @@ class App extends Component {
       searchImg: value.toLowerCase(),
       loading: true,
       page: 1,
-      img: [],
+      imgArr: [],
     });
   };
 
-  handleLoadeMore = () => {
-    this.setState(({ page }) => ({
-      page: page + 1,
-      // loading: true,
-    }));
-  };
+  // handleLoadeMore = () => {
+  //   this.setState(({ page }) => ({
+  //     page: page + 1,
+  //     // loading: true,
+  //   }));
+  // };
 
-  hendelOpenModal = (e) => {
-    this.setState(
-      {
-        modalImg: e.target.dataset.source,
-      },
-      () => {
-        this.toggleModal();
-      }
-    );
-    // isModalOpen: true,
-    // modalImg: e.target.dataset.source,
-  };
-  toggleModal = () => {
-    this.setState(({ isModalOpen }) => ({
-      isModalOpen: !isModalOpen,
+  // onOpen = (e) => {
+  //   this.setState({ modalImg: e.target.dataset.source });
+  //   this.toggleModal();
+  // };
+  // toggleModal = () => {
+  //   this.setState(({ isModalOpen }) => ({
+  //     isModalOpen: !isModalOpen,
+  //   }));
+  // };
+  handleLoadeMore = () => {
+    this.setState((currentPage) => ({
+      page: currentPage.page + 1,
     }));
+  };
+  hendelOpenModal = (e) => {
+    this.setState({
+      isModalOpen: true,
+      modalImg: e.target.dataset.source,
+    });
   };
   hendelCloseModal = () => {
     this.setState({ isModalOpen: false, modalImg: "" });
   };
-
   render() {
-    const { img, error, status, isModalOpen, modalImg } = this.state;
-    const resolvedImg = status === Status.RESOLVED && img.length > 11;
+    const { imgArr, error, status, isModalOpen, modalImg } = this.state;
+    const resolvedImg = status === Status.RESOLVED && imgArr.length > 11;
     // loading, currentPage,
     return (
       <>
+        <ToastContainer autoClose={3000} />
         <Searchbar onSubmit={this.handleSubmit} />
         {status === Status.IDLE && (
           <h2 className="invitation">Use Search above!</h2>
         )}
         {status === Status.REJECTED && <h1>{error.message}</h1>}
-        <ToastContainer autoClose={3000} />
 
         {resolvedImg && (
-          <ImageGallery imgArr={img} onOpen={this.hendelOpenModal} />
+          <ImageGallery imgArr={imgArr} onOpen={this.hendelOpenModal} />
         )}
         {status === Status.PENDING && <Loader />}
-        {img.length !== 0 && <Button onClick={this.handleLoadeMore} />}
+        {imgArr.length !== 0 && <Button onClick={this.handleLoadeMore} />}
         {isModalOpen && (
-          <Modal modalClose={this.hendelCloseModal} largeImageURL={modalImg} />
-        )}
-        {/* {isModalOpen && (
           <Modal modalImg={modalImg} modalClose={this.hendelCloseModal} />
         )}
-        {loading && <Loader />}
-        {currentPage && <Button onClick={this.handleLoadeMore} />} */}
       </>
     );
   }

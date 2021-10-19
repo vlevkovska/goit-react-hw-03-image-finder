@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import style from "./ImageGalleryItem.module.css";
 
-function ImageGalleryItem({ webformatURL, tags, onOpen, largeImageURL }) {
+function ImageGalleryItem({ webformatURL, tags, largeImageURL, onOpen }) {
   return (
     <li className={style.ImageGalleryItem}>
       <img
@@ -20,8 +20,8 @@ function ImageGalleryItem({ webformatURL, tags, onOpen, largeImageURL }) {
 export default ImageGalleryItem;
 
 ImageGalleryItem.propTypes = {
-  webformatURL: PropTypes.string.isRequired,
+  webformatURL: PropTypes.string,
   tags: PropTypes.string.isRequired,
   onOpen: PropTypes.func,
-  largeImageURL: PropTypes.string.isRequired,
+  modalImg: PropTypes.string,
 };
