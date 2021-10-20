@@ -63,7 +63,7 @@ class App extends Component {
         if (!hits.length) {
           alert("No such pictures, try again");
           this.setState({
-            error: "Something went wrong, please. try again",
+            error: "Something went wrong. Please try again",
             status: "rejected",
           });
         } else this.setState({ error: null });
