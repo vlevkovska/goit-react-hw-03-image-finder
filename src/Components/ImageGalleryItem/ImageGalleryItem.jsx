@@ -7,7 +7,7 @@ function ImageGalleryItem({ webformatURL, tags, largeImageURL, onOpen }) {
   return (
     <li className={style.ImageGalleryItem}>
       <img
-        onClick={onOpen}
+        // onClick={onOpen}
         data-source={largeImageURL}
         src={webformatURL}
         alt={tags}

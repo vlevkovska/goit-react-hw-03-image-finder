@@ -6,7 +6,10 @@ import style from "./ImageGallery.module.css";
 
 function ImageGallery({ imgArr, onOpen }) {
   return (
-    <ul className={style.ImageGallery}>
+    <ul
+      className={style.ImageGallery}
+      onClick={(e) => onOpen(e.target.dataset.source)}
+    >
       {imgArr.map(({ webformatURL, id, tags, modalImg }) => (
         <ImageGalleryItem
           key={id}

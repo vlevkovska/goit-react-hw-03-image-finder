@@ -109,10 +109,10 @@ class App extends Component {
       page: currentPage.page + 1,
     }));
   };
-  hendelOpenModal = (e) => {
+  hendelOpenModal = (img) => {
     this.setState({
       isModalOpen: true,
-      modalImg: e.target.dataset.source,
+      modalImg: img,
     });
   };
   hendelCloseModal = () => {
