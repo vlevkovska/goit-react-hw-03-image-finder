@@ -13,10 +13,11 @@ function ImageGallery({ imgArr, onOpen }) {
       {imgArr.map(({ webformatURL, id, tags, largeImageURL }) => (
         <ImageGalleryItem
           key={id}
+          id={id}
           tags={tags}
           webformatURL={webformatURL}
           largeImageURL={largeImageURL}
-          onOpen={onOpen}
+          // onOpen={onOpen}
         />
       ))}
       {/* {imgArr.map((imgArr) => (
@@ -26,16 +27,16 @@ function ImageGallery({ imgArr, onOpen }) {
   );
 }
 
-export default ImageGallery;
-
 ImageGallery.propTypes = {
   imgArr: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       tags: PropTypes.string.isRequired,
       webformatURL: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string,
+      largeImageURL: PropTypes.string.isRequired,
     })
   ),
-  onOpen: PropTypes.func,
+  onOpen: PropTypes.func.isRequired,
 };
+
+export default ImageGallery;

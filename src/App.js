@@ -20,17 +20,13 @@ const Status = {
 
 class App extends Component {
   state = {
-    searchImg: "",
+    searchImg: null,
     page: 1,
     imgArr: [],
-    loading: false,
-    // currentPage: null,
     largeImageURL: "",
     isModalOpen: false,
     error: null,
     status: Status.IDLE,
-    webformatURL: "",
-    id: "",
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -42,36 +38,38 @@ class App extends Component {
       this.setState({ imgArr: [], page: 1, status: Status.PENDING });
     }
     if (prevName !== nextName || prevPage !== nextPage) {
-      this.fetchImages(nextName, nextPage);
+      this.FetchImages(nextName, nextPage);
     }
   }
-  // if (
-  //   prevState.currentPage !== this.state.currentPage ||
-  //   !this.state.img.length
-  // ) {
-  fetchImages(nextName, nextPage) {
+
+  getData = (data) => {
+    return data.map(({ id, tags, webformatURL, largeImageURL }) => {
+      return {
+        id: id,
+        webformatURL: webformatURL,
+        tags: tags,
+        largeImageURL: largeImageURL,
+      };
+    });
+  };
+
+  FetchImages = (nextName, nextPage) => {
     imagesApi
-      .fetchImages(nextName, nextPage)
-      .then((imgArr) => {
-        this.setState((prevState) => {
-          return {
-            imgArr: [...prevState.imgArr, ...imgArr.hits],
-            status: Status.RESOLVED,
-          };
-        });
-        if (nextPage !== 1) {
-          window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: "smooth",
+      .FetchImages(nextName, nextPage)
+      .then(({ hits }) => {
+        const data = this.getData(hits);
+        this.setState({ imgArr: data, status: "resolved" });
+
+        if (!hits.length) {
+          alert("No such pictures, try again");
+          this.setState({
+            error: "Something went wrong, please. try again",
+            status: "rejected",
           });
-        }
-        if (imgArr.total === 0) {
-          return Promise.reject(new Error("Incorrect input"));
-        }
+        } else this.setState({ error: null });
       })
       .catch((error) => this.setState({ error, status: Status.REJECTED }));
-    // .finally(() => this.setState({ loading: false }));
-  }
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -88,36 +86,38 @@ class App extends Component {
     });
   };
 
-  // handleLoadeMore = () => {
-  //   this.setState(({ page }) => ({
-  //     page: page + 1,
-  //     // loading: true,
-  //   }));
-  // };
-
-  // onOpen = (e) => {
-  //   this.setState({ modalImg: e.target.dataset.source });
-  //   this.toggleModal();
-  // };
-  // toggleModal = () => {
-  //   this.setState(({ isModalOpen }) => ({
-  //     isModalOpen: !isModalOpen,
-  //   }));
-  // };
-  handleLoadeMore = () => {
-    this.setState((currentPage) => ({
-      page: currentPage.page + 1,
-    }));
+  handleLoadeMore = (searchImg, page) => {
+    imagesApi
+      .FetchImages(searchImg, page)
+      .then(({ hits }) => {
+        const data = this.getData(hits);
+        this.setState((prev) => ({
+          imgArr: [...prev.imgArr, ...data],
+          status: "resolved",
+        }));
+        this.scroll();
+      })
+      .catch((error) => this.setState({ error, status: "reject" }));
   };
+
+  scroll = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
   hendelOpenModal = (img) => {
     this.setState({
       isModalOpen: true,
       modalImg: img,
     });
   };
+
   hendelCloseModal = () => {
     this.setState({ isModalOpen: false, modalImg: "" });
   };
+
   render() {
     const { imgArr, error, status, isModalOpen, modalImg } = this.state;
     const resolvedImg = status === Status.RESOLVED && imgArr.length > 11;

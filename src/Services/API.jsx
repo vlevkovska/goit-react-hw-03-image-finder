@@ -1,4 +1,4 @@
-function fetchImages(img, page) {
+function FetchImages(img, page) {
   const API_KEY = "23793880-43251762e8c5681d941546cf6";
 
   return fetch(
@@ -7,11 +7,10 @@ function fetchImages(img, page) {
     if (response.ok) {
       return response.json();
     }
-
-    // return Promise.reject(new Error(`No pictures "${img} were found`));
+    return Promise.reject(new Error(`No pictures "${img}" were found`));
   });
 }
 
-const imagesAPI = { fetchImages };
+const imagesAPI = { FetchImages };
 
 export default imagesAPI;
