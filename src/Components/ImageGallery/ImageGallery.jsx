@@ -10,12 +10,12 @@ function ImageGallery({ imgArr, onOpen }) {
       className={style.ImageGallery}
       onClick={(e) => onOpen(e.target.dataset.source)}
     >
-      {imgArr.map(({ webformatURL, id, tags, modalImg }) => (
+      {imgArr.map(({ webformatURL, id, tags, largeImageURL }) => (
         <ImageGalleryItem
           key={id}
           tags={tags}
           webformatURL={webformatURL}
-          modalImg={modalImg}
+          largeImageURL={largeImageURL}
           onOpen={onOpen}
         />
       ))}
@@ -34,7 +34,7 @@ ImageGallery.propTypes = {
       id: PropTypes.number.isRequired,
       tags: PropTypes.string.isRequired,
       webformatURL: PropTypes.string.isRequired,
-      modalImg: PropTypes.string,
+      largeImageURL: PropTypes.string,
     })
   ),
   onOpen: PropTypes.func,
