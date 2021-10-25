@@ -36,7 +36,7 @@ ImageGallery.propTypes = {
       largeImageURL: PropTypes.string.isRequired,
     })
   ),
-  onOpen: PropTypes.func.isRequired,
+  onOpen: PropTypes.func,
 };
 
 export default ImageGallery;

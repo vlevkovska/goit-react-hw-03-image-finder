@@ -1,8 +1,11 @@
 import { Component } from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import style from "./Modal.module.css";
 
 class Modal extends Component {
+  static defaultProps = {
+    modalClose: PropTypes.func.isRequired,
+  };
   componentDidMount() {
     window.addEventListener("keydown", this.closeModalByESC);
   }
@@ -27,11 +30,6 @@ class Modal extends Component {
           <img src={modalImg} alt="" />
         </div>
       </div>
-      // <div onClick={modalClose} className={style.Overlay}>
-      //   <div className={style.Modal}>
-      //     <img src={modalImg} alt="" />
-      //   </div>
-      // </div>
     );
   }
 }

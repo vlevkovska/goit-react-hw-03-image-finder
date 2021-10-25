@@ -11,6 +11,6 @@ function FetchImages(img, page) {
   });
 }
 
-const imagesAPI = { FetchImages };
+// const imagesAPI = { FetchImages };
 
-export default imagesAPI;
+export default FetchImages;
